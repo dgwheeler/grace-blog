@@ -2,6 +2,7 @@
 import BaseHead from '../components/BaseHead.astro';
 import Footer from '../components/Footer.astro';
 import Header from '../components/Header.astro';
+import heroImage from '../assets/blog/index.png';
 ---
 
 <!doctype html>
@@ -24,6 +25,7 @@ import Header from '../components/Header.astro';
 	<body>
 		<Header />
 		<main>
+			<img src={heroImage.src} alt="Home" style="width:100%;border-radius:8px;margin-bottom:1.5em;" />
 			<p>After Two Thirty
 <em>Small moments of motherhood</em></p>
 <p>Every afternoon at 2:30, I stand at the school gate and wait for my daughters to walk out.</p>
