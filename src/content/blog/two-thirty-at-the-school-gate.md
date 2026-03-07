@@ -1,13 +1,11 @@
 ---
 title: 'Two-Thirty At The School Gate'
-description: 'Two-Thirty At The School Gate'
-pubDate: '2026-03-07T12:58:33.543319'
+description: 'About me'
+pubDate: ''
 heroImage: '../../assets/blog/two-thirty-at-the-school-gate.png'
 ---
 
 Every afternoon at two-thirty, I stand at the school gate and wait.
-
-Looking at the School door as the kids stream past me.
 
 Some parents scroll through their phones.
 Some chat in small groups.
