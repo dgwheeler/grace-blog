@@ -2,6 +2,7 @@
 import BaseHead from '../components/BaseHead.astro';
 import Footer from '../components/Footer.astro';
 import Header from '../components/Header.astro';
+import heroImage from '../assets/blog/why-i-write.png';
 ---
 
 <!doctype html>
@@ -24,6 +25,7 @@ import Header from '../components/Header.astro';
 	<body>
 		<Header />
 		<main>
+			<img src={heroImage.src} alt="Why I Write" style="width:100%;border-radius:8px;margin-bottom:1.5em;" />
 			<p>Motherhood is complicated, beautiful, and exhausting.
 There is struggle, and there is joy.
 There are tears, and there is laughter.</p>
