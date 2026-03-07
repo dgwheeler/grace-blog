@@ -42,13 +42,25 @@ const posts = (await getCollection('blog')).sort(
 			ul li:first-child .title {
 				font-size: 2.369rem;
 			}
-			ul li img {
+			ul li:first-child img {
 				width: 100%;
 				height: auto;
 				margin-bottom: 0.5rem;
 				border-radius: 12px;
 			}
-			ul li a {
+			ul li:not(:first-child) a {
+				display: flex;
+				gap: 1rem;
+				align-items: flex-start;
+			}
+			ul li:not(:first-child) img {
+				width: 200px;
+				min-width: 200px;
+				height: auto;
+				border-radius: 8px;
+				object-fit: cover;
+			}
+			ul li:first-child a {
 				display: block;
 			}
 			.title {
@@ -81,6 +93,13 @@ const posts = (await getCollection('blog')).sort(
 				ul li:first-child .title {
 					font-size: 1.563em;
 				}
+				ul li:not(:first-child) a {
+					flex-direction: column;
+				}
+				ul li:not(:first-child) img {
+					width: 100%;
+					min-width: unset;
+				}
 			}
 		</style>
 	</head>
@@ -93,10 +112,13 @@ const posts = (await getCollection('blog')).sort(
 						posts.map((post) => (
 							<li>
 								<a href={`/blog/${post.id}/`}>
-									<h4 class="title">{post.data.title}</h4>
-									<p class="date">
-										<FormattedDate date={post.data.pubDate} />
-									</p>
+									{post.data.heroImage && <img src={post.data.heroImage.src || post.data.heroImage} alt={post.data.title} />}
+									<div>
+										<h4 class="title">{post.data.title}</h4>
+										<p class="date">
+											<FormattedDate date={post.data.pubDate} />
+										</p>
+									</div>
 								</a>
 							</li>
 						))
