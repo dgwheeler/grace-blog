@@ -1,13 +1,13 @@
 ---
 title: 'Two-Thirty At The School Gate'
 description: 'About me'
-pubDate: ''
+pubDate: '2026-03-07T12:58:33'
 heroImage: '../../assets/blog/two-thirty-at-the-school-gate.png'
 ---
 
 Every afternoon at two-thirty, I stand at the school gate and wait.
 
-Some parents scroll through their phones.
+Some parents scroll through their phones..
 Some chat in small groups.
 Some wave even before their children notice them.
 
