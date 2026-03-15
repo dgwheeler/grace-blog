@@ -1,34 +1,235 @@
 ---
+import { getCollection } from 'astro:content';
 import BaseHead from '../components/BaseHead.astro';
 import Footer from '../components/Footer.astro';
 import Header from '../components/Header.astro';
-import heroImage from '../assets/blog/index.png';
+import { SITE_DESCRIPTION } from '../consts';
+
+const posts = (await getCollection('blog')).sort(
+	(a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf(),
+);
+const latestPost = posts[0];
 ---
 
 <!doctype html>
 <html lang="en">
 	<head>
-		<BaseHead title="Home" description="Welcome to my website!" />
+		<BaseHead title="After Two Thirty" description={SITE_DESCRIPTION} />
 		<style>
-			article p {
-				margin-bottom: 1.4rem;
+			.hero {
+				text-align: center;
+				padding: 2rem 0 1.5rem;
+			}
+			.hero h1 {
+				font-family: var(--font-display);
+				font-size: 2.8rem;
+				font-weight: 700;
+				margin-bottom: 0.2rem;
+				letter-spacing: -0.01em;
+			}
+			.hero .subtitle-line {
+				width: 80px;
+				height: 2px;
+				background: var(--color-accent);
+				margin: 0.6rem auto;
+			}
+			.hero .subtitle {
+				font-family: var(--font-serif);
+				font-style: italic;
+				font-size: 1.1rem;
+				color: var(--color-text-light);
+				margin-bottom: 0;
+			}
+
+			.intro {
+				text-align: center;
+				max-width: 620px;
+				margin: 1.5rem auto 2rem;
+				font-family: var(--font-serif);
 				font-size: 1rem;
 				line-height: 1.85;
+				color: var(--color-text);
+			}
+			.intro em {
+				font-style: italic;
+			}
+
+			/* Featured post */
+			.featured {
+				margin: 1rem 0 2rem;
+			}
+			.featured .label {
+				font-family: var(--font-serif);
+				font-style: italic;
+				font-size: 1rem;
+				color: var(--color-text-light);
+				margin-bottom: 1rem;
+			}
+			.featured-content {
+				display: flex;
+				gap: 2rem;
+				align-items: flex-start;
+			}
+			.featured-text {
+				flex: 1;
+			}
+			.featured-text h2 {
+				font-family: var(--font-display);
+				font-size: 1.5rem;
+				font-weight: 700;
+				margin-bottom: 0.8rem;
+				margin-top: 0;
+			}
+			.featured-text p {
+				font-size: 0.95rem;
+				line-height: 1.7;
+				color: var(--color-text);
+				margin-bottom: 1.2rem;
+			}
+			.featured-image {
+				flex: 1;
+				max-width: 320px;
+			}
+			.featured-image img {
+				width: 100%;
+				height: auto;
+				border-radius: 6px;
+			}
+			.featured-image .caption {
+				font-family: var(--font-serif);
+				font-size: 0.78rem;
+				color: var(--color-text-light);
+				text-align: right;
+				margin-top: 0.4rem;
+				font-style: italic;
+			}
+
+			/* Essay columns */
+			.essay-columns {
+				display: grid;
+				grid-template-columns: 1fr 1fr;
+				gap: 2rem;
+				border-top: 1px solid var(--color-border);
+				padding-top: 2rem;
+				margin-top: 2rem;
+			}
+			.essay-column h3 {
+				font-family: var(--font-display);
+				font-size: 1.2rem;
+				font-weight: 700;
+				margin-bottom: 0.2rem;
+			}
+			.essay-column .column-subtitle {
+				font-family: var(--font-serif);
+				font-style: italic;
+				font-size: 0.88rem;
+				color: var(--color-text-light);
+				margin-bottom: 1rem;
+			}
+			.essay-column ul {
+				list-style: disc;
+				padding-left: 1.2rem;
+				margin: 0;
+			}
+			.essay-column li {
+				font-family: var(--font-serif);
+				font-size: 0.92rem;
+				margin: 0.5rem 0;
+				line-height: 1.5;
+			}
+			.essay-column li a {
+				color: var(--color-text);
+				text-decoration: none;
+			}
+			.essay-column li a:hover {
+				color: var(--color-accent-dark);
+			}
+
+			/* Dedication */
+			.dedication {
+				text-align: center;
+				padding: 2rem 0 1rem;
+				font-family: var(--font-script);
+				font-size: 1.5rem;
+				color: var(--color-text);
+			}
+			.dedication .heart {
+				font-size: 1.2rem;
+				margin-top: 0.3rem;
+				color: var(--color-accent);
+			}
+
+			@media (max-width: 600px) {
+				.hero h1 { font-size: 2rem; }
+				.featured-content { flex-direction: column; }
+				.featured-image { max-width: 100%; }
+				.essay-columns { grid-template-columns: 1fr; }
 			}
 		</style>
 	</head>
 	<body>
 		<Header />
 		<main>
-			<article>
-			<img src={heroImage.src} alt="Home" style="width:100%;border-radius:8px;margin-bottom:1.5em;" />
-				<p>After Two Thirty
-<em>Small moments of motherhood</em></p>
-<p>Every afternoon at 2:30, I stand at the school gate and wait for my daughters to walk out.</p>
-<p>They experience the world a little differently, and raising them has taught me to notice things I might once have missed.</p>
-<p>These essays are small moments from our life — the waiting, the worrying, the laughter, and the quiet learning that comes after two-thirty.</p>
-			</article>
+			<!-- Hero -->
+			<div class="hero">
+				<h1>After Two Thirty</h1>
+				<div class="subtitle-line"></div>
+				<p class="subtitle">small moments of motherhood</p>
+			</div>
+
+			<!-- Intro -->
+			<div class="intro">
+				<p>Every afternoon at 2:30, I stand at the school gate and wait for my daughters to walk out. They experience the world a little differently, and raising them has taught me to notice things I might once have missed.</p>
+				<p>These essays are small moments from our life &mdash; the waiting, the worrying, the laughter &mdash; and the quiet learning that comes <em>after two-thirty.</em></p>
+			</div>
+
+			<!-- Featured post -->
+			{latestPost && (
+				<div class="featured">
+					<p class="label">Begin Reading</p>
+					<div class="featured-content">
+						<div class="featured-text">
+							<h2>{latestPost.data.title}</h2>
+							<p>{latestPost.data.description}</p>
+							<a href={`/blog/${latestPost.id}/`} class="btn-read">Read Essay &rarr;</a>
+						</div>
+						{latestPost.data.heroImage && (
+							<div class="featured-image">
+								<img src={latestPost.data.heroImage.src} alt={latestPost.data.title} />
+								<p class="caption">Drawing by Vicky</p>
+							</div>
+						)}
+					</div>
+				</div>
+			)}
+
+			<!-- Essay columns -->
+			<div class="essay-columns">
+				<div class="essay-column">
+					<h3>After Two Thirty</h3>
+					<p class="column-subtitle">Stories from the school gate</p>
+					<ul>
+						{posts.map((post) => (
+							<li><a href={`/blog/${post.id}/`}>{post.data.title}</a></li>
+						))}
+					</ul>
+				</div>
+				<div class="essay-column">
+					<h3>Before Two Thirty</h3>
+					<p class="column-subtitle">The world children are growing into</p>
+					<ul>
+						<li>Coming soon</li>
+					</ul>
+				</div>
+			</div>
 		</main>
-		<Footer />
+
+		<!-- Footer with dedication in slot -->
+		<Footer>
+			<div class="dedication">
+				<p>For Vicky and Sydney</p>
+				<div class="heart">&#x1F331;</div>
+			</div>
+		</Footer>
 	</body>
 </html>
