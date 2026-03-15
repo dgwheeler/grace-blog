@@ -10,27 +10,24 @@ import heroImage from '../assets/blog/index.png';
 	<head>
 		<BaseHead title="Home" description="Welcome to my website!" />
 		<style>
-			main {
-				width: 720px;
-				max-width: calc(100% - 2em);
-				margin: auto;
-				padding: 1em;
-			}
-			main p {
-				margin-bottom: 1em;
-				line-height: 1.7;
+			article p {
+				margin-bottom: 1.4rem;
+				font-size: 1rem;
+				line-height: 1.85;
 			}
 		</style>
 	</head>
 	<body>
 		<Header />
 		<main>
+			<article>
 			<img src={heroImage.src} alt="Home" style="width:100%;border-radius:8px;margin-bottom:1.5em;" />
-			<p>After Two Thirty
+				<p>After Two Thirty
 <em>Small moments of motherhood</em></p>
-<p>Every afternoon at 2:30, I stand at the school gate and wait for my daughters to walk out.</p>
+<p>Every afternoon at 2:30 I stand at the school gate and wait for my daughters to walk out.</p>
 <p>They experience the world a little differently, and raising them has taught me to notice things I might once have missed.</p>
 <p>These essays are small moments from our life — the waiting, the worrying, the laughter, and the quiet learning that comes after two-thirty.</p>
+			</article>
 		</main>
 		<Footer />
 	</body>
