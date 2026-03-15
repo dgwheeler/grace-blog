@@ -10,23 +10,19 @@ import heroImage from '../assets/blog/why-i-write.png';
 	<head>
 		<BaseHead title="Why I Write" description="Why I Write" />
 		<style>
-			main {
-				width: 720px;
-				max-width: calc(100% - 2em);
-				margin: auto;
-				padding: 1em;
-			}
-			main p {
-				margin-bottom: 1em;
-				line-height: 1.7;
+			article p {
+				margin-bottom: 1.4rem;
+				font-size: 1rem;
+				line-height: 1.85;
 			}
 		</style>
 	</head>
 	<body>
 		<Header />
 		<main>
+			<article>
 			<img src={heroImage.src} alt="Why I Write" style="width:100%;border-radius:8px;margin-bottom:1.5em;" />
-			<p>Motherhood is complicated, beautiful, and exhausting.
+				<p>Motherhood is complicated, beautiful, and exhausting.
 There is struggle, and there is joy.
 There are tears, and there is laughter.</p>
 <p>I am living it in real time.</p>
@@ -50,6 +46,7 @@ how much I was growing because of you.</p>
 <p>You were not just children I raised.</p>
 <p>You were teachers who raised me too.</p>
 <p>— Mom</p>
+			</article>
 		</main>
 		<Footer />
 	</body>
