@@ -3,28 +3,53 @@ const today = new Date();
 ---
 
 <footer>
-	&copy; {today.getFullYear()} Grace Wang. All rights reserved.
-	<div class="social-links">
+	<div class="footer-nav">
+		<a href="/">Home</a>
+		<span class="footer-sep">|</span>
+		<a href="/blog">Essays</a>
+		<span class="footer-sep">|</span>
+		<a href="/why-i-write">Why I Write</a>
+		<span class="footer-sep">|</span>
+		<a href="/about">About</a>
 	</div>
+	<slot />
 </footer>
 <style>
 	footer {
-		padding: 2em 1em 6em 1em;
-		background: linear-gradient(var(--gray-gradient)) no-repeat;
-		color: rgb(var(--gray));
+		border-top: 1px solid var(--color-border);
+		padding: 2rem 2rem 2.5rem;
 		text-align: center;
+		font-family: var(--font-serif);
+		font-size: 0.88rem;
+		color: var(--color-text);
 	}
-	.social-links {
+	.footer-nav {
 		display: flex;
 		justify-content: center;
-		gap: 1em;
-		margin-top: 1em;
+		align-items: center;
+		gap: 0;
+		flex-wrap: wrap;
+		margin-bottom: 1.8rem;
 	}
-	.social-links a {
+	.footer-nav :global(a) {
+		font-family: var(--font-serif);
+		font-size: 0.88rem;
+		color: var(--color-text);
 		text-decoration: none;
-		color: rgb(var(--gray));
+		padding: 0 1rem;
 	}
-	.social-links a:hover {
-		color: rgb(var(--gray-dark));
+	.footer-nav :global(a:hover) {
+		color: var(--color-accent-dark);
+	}
+	.footer-nav :global(.footer-sep) {
+		color: var(--color-border);
+		font-size: 0.9rem;
+		user-select: none;
+	}
+	@media (max-width: 600px) {
+		.footer-nav :global(a) {
+			padding: 0 0.6rem;
+			font-size: 0.8rem;
+		}
 	}
 </style>
