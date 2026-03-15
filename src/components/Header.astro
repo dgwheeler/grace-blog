@@ -1,59 +1,32 @@
 ---
-import { SITE_TITLE } from '../consts';
 import HeaderLink from './HeaderLink.astro';
 ---
 
 <header>
 	<nav>
-		<h2><a href="/">{SITE_TITLE}</a></h2>
-		<div class="internal-links">
-			<HeaderLink href="/">Home</HeaderLink>
-			<HeaderLink href="/blog">Blog</HeaderLink>
-			<HeaderLink href="/why-i-write">Why I Write</HeaderLink>
-			<HeaderLink href="/about">About</HeaderLink>
-		</div>
-		<div class="social-links">
-		</div>
+		<HeaderLink href="/">Home</HeaderLink>
+		<HeaderLink href="/blog">Essays</HeaderLink>
+		<HeaderLink href="/why-i-write">Why I Write</HeaderLink>
+		<HeaderLink href="/about">About</HeaderLink>
 	</nav>
 </header>
 <style>
 	header {
-		margin: 0;
-		padding: 0 1em;
-		background: white;
-		box-shadow: 0 2px 8px rgba(var(--black), 5%);
-	}
-	h2 {
-		margin: 0;
-		font-size: 1em;
-	}
-
-	h2 a,
-	h2 a.active {
-		text-decoration: none;
+		padding: 1.4rem 2rem 0;
+		background: var(--color-bg);
 	}
 	nav {
+		max-width: 680px;
+		margin: 0 auto;
 		display: flex;
-		align-items: center;
-		justify-content: space-between;
+		justify-content: center;
+		gap: 2.5rem;
+		padding-bottom: 1rem;
+		border-bottom: 2px solid var(--color-accent);
 	}
-	nav a {
-		padding: 1em 0.5em;
-		color: var(--black);
-		border-bottom: 4px solid transparent;
-		text-decoration: none;
-	}
-	nav a.active {
-		text-decoration: none;
-		border-bottom-color: var(--accent);
-	}
-	.social-links,
-	.social-links a {
-		display: flex;
-	}
-	@media (max-width: 720px) {
-		.social-links {
-			display: none;
+	@media (max-width: 600px) {
+		nav {
+			gap: 1.5rem;
 		}
 	}
 </style>
