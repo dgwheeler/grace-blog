@@ -3,6 +3,7 @@ title: 'Two-Thirty At The School Gate'
 description: 'About me'
 pubDate: '2026-03-07T12:58:33'
 heroImage: '../../assets/blog/two-thirty-at-the-school-gate.png'
+category: 'after-two-thirty'
 ---
 
 Every afternoon at two-thirty, I stand at the school gate and wait.
