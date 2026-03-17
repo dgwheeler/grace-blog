@@ -1,111 +1,240 @@
-body {
-	font-family: "Cormorant Garamond", serif;
-	background: #f7f6f4;
-	color: #333;
+/*
+  Literary design for After Two Thirty.
+  Serif body (Lora), display headings (Playfair Display),
+  sans-serif accents (Inter), decorative script (Caveat).
+ */
+
+* {
 	margin: 0;
+	padding: 0;
+	box-sizing: border-box;
 }
 
-.container {
-	max-width: 720px;
-	margin: auto;
-	padding: 40px;
+:root {
+	--color-bg: #fdfcfa;
+	--color-text: #2d2d2d;
+	--color-text-light: #5a5a5a;
+	--color-accent: #7a8fa6;
+	--color-accent-dark: #5c7080;
+	--color-border: #c8ced6;
+	--color-border-light: #e0e4e8;
+	--color-card-bg: #ffffff;
+	--font-serif: 'Lora', Georgia, 'Times New Roman', serif;
+	--font-display: 'Playfair Display', Georgia, serif;
+	--font-sans: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+	--font-script: 'Caveat', cursive;
 }
 
-.site-header nav {
-	text-align: center;
-	margin: 30px 0;
+html {
+	font-size: 18px;
+	scroll-behavior: smooth;
 }
 
-.site-header a {
-	margin: 0 15px;
-	text-decoration: none;
-	color: #444;
+body {
+	font-family: var(--font-serif);
+	background-color: var(--color-bg);
+	color: var(--color-text);
+	line-height: 1.8;
+	min-height: 100vh;
+	display: flex;
+	flex-direction: column;
 }
 
-.title {
-	text-align: center;
-	font-size: 52px;
+main {
+	flex: 1;
+	max-width: 750px;
+	width: 100%;
+	margin: 0 auto;
+	padding: 2.5rem 2rem 3rem;
 }
 
-.subtitle {
-	text-align: center;
-	font-style: italic;
-	color: #777;
+h1, h2, h3, h4, h5, h6 {
+	font-family: var(--font-display);
+	color: var(--color-text);
+	line-height: 1.3;
+	margin: 0 0 0.5rem 0;
 }
 
-.site-footer {
-	text-align: center;
-	margin-top: 80px;
-	padding: 40px;
-	border-top: 1px solid #ddd;
+h1 {
+	font-size: 2.2rem;
+	font-weight: 700;
+	letter-spacing: -0.01em;
 }
 
-.footer-links a {
-	margin: 0 10px;
-	text-decoration: none;
-	color: #444;
+h2 {
+	font-size: 1.5rem;
+	font-weight: 700;
+	margin-top: 2.5rem;
+	letter-spacing: -0.01em;
 }
 
-.dedication {
-	margin-top: 20px;
-	font-family: 'Caveat', cursive;
-	font-size: 22px;
-	color: #666;
+h3 {
+	font-size: 1.25rem;
+	font-weight: 700;
+	margin-top: 2rem;
 }
+
+h4 { font-size: 1.1rem; font-weight: 700; margin-top: 1.5rem; }
+h5 { font-size: 1rem; font-weight: 700; margin-top: 1.5rem; }
+
+strong, b { font-weight: 600; }
 
 a {
-	color: #444;
+	color: var(--color-text);
 	text-decoration: none;
+	transition: color 0.2s;
 }
 
 a:hover {
-	color: #222;
+	color: var(--color-accent-dark);
 }
 
 p {
-	margin-bottom: 1.2em;
-	line-height: 1.8;
+	margin-bottom: 1.4rem;
+	font-size: 1rem;
+	line-height: 1.85;
 }
+
+.prose p {
+	margin-bottom: 1.4rem;
+}
+
+textarea { width: 100%; font-size: 16px; }
+input { font-size: 16px; }
+table { width: 100%; }
 
 img {
 	max-width: 100%;
 	height: auto;
+	border-radius: 4px;
+	display: block;
 }
 
-h1, h2, h3 {
-	font-family: "Cormorant Garamond", serif;
+code {
+	padding: 0.15em 0.35em;
+	background-color: #f0ebe4;
+	border-radius: 4px;
+	font-size: 0.85em;
 }
 
-/* Blog post layout */
-.prose {
-	max-width: 720px;
-	margin: 0 auto;
+pre {
+	padding: 1.25rem;
+	border-radius: 6px;
+	background-color: #2d2d2d;
+	color: #e6e6e6;
+	overflow-x: auto;
+	line-height: 1.5;
+	margin: 1.5rem 0;
 }
 
-.page-title {
-	font-size: 36px;
-	margin-bottom: 0.3rem;
+pre > code {
+	all: unset;
 }
 
-.date {
-	font-size: 14px;
-	color: #999;
-	text-transform: uppercase;
-	letter-spacing: 0.05em;
+blockquote {
+	border-left: 3px solid var(--color-accent);
+	padding: 0 0 0 1.5rem;
+	margin: 1.5rem 0;
+	color: var(--color-text-light);
+	font-style: italic;
 }
 
+hr {
+	border: none;
+	width: 100%;
+	height: 1px;
+	background: var(--color-border);
+	margin: 2rem auto;
+}
+
+ul, ol {
+	margin: 1rem 0;
+	padding-left: 1.2rem;
+}
+
+li {
+	margin: 0.4rem 0;
+	font-size: 0.92rem;
+	line-height: 1.6;
+}
+
+/* Section dividers */
 .divider {
 	width: 100%;
 	height: 1px;
-	background: #ddd;
-	margin: 1rem 0 2rem;
+	background: var(--color-border);
+	margin: 2rem auto;
 }
 
+.divider-short {
+	width: 60px;
+	height: 1px;
+	background: var(--color-accent);
+	margin: 2rem auto;
+}
+
+/* Page titles (inner pages) */
+.page-title {
+	font-family: var(--font-display);
+	font-size: 2.2rem;
+	font-weight: 700;
+	margin-bottom: 0.3rem;
+	letter-spacing: -0.01em;
+	color: var(--color-text);
+}
+
+.page-subtitle {
+	font-style: italic;
+	color: var(--color-text-light);
+	margin-bottom: 2rem;
+	font-size: 1rem;
+}
+
+.page-divider {
+	width: 100%;
+	height: 1px;
+	background: var(--color-border);
+	margin: 1rem 0 2rem 0;
+}
+
+/* Hero image */
 .hero-image {
 	width: 100%;
 	max-height: 360px;
 	object-fit: cover;
+	border-radius: 6px;
 	margin-bottom: 2rem;
+	display: block;
+}
+
+/* Article / prose content */
+article p {
+	margin-bottom: 1.4rem;
+	font-size: 1rem;
+	line-height: 1.85;
+}
+
+article .signature {
+	margin-top: 2rem;
+	font-style: italic;
+	color: var(--color-text-light);
+}
+
+/* Read button */
+.btn-read {
+	display: inline-block;
+	font-family: var(--font-serif);
+	font-size: 1rem;
+	color: #fff;
+	background: var(--color-accent);
+	padding: 0.6rem 1.6rem;
+	border-radius: 4px;
+	text-decoration: none;
+	transition: background 0.2s;
+}
+
+.btn-read:hover {
+	background: var(--color-accent-dark);
 }
 
 /* Post cards */
@@ -113,55 +242,62 @@ h1, h2, h3 {
 	display: block;
 	text-decoration: none;
 	color: inherit;
-	border: 1px solid #e8e6e2;
+	background: var(--color-bg);
+	border: 1px solid var(--color-border-light);
+	border-radius: 6px;
 	margin-bottom: 1rem;
 	overflow: hidden;
-	transition: border-color 0.2s;
+	transition: border-color 0.2s, box-shadow 0.2s;
 }
 
 .post-card:hover {
-	border-color: #999;
+	border-color: var(--color-accent);
+	box-shadow: 0 2px 12px rgba(0, 0, 0, 0.04);
 }
 
-.post-card img {
+.post-card .post-card-image {
 	width: 100%;
 	height: 200px;
 	object-fit: cover;
 	display: block;
 }
 
-.post-card-body {
-	padding: 1.5rem;
+.post-card .post-card-body {
+	padding: 1.8rem 2rem;
 }
 
 .post-card h3 {
+	font-family: var(--font-display);
 	font-size: 1.2rem;
+	font-weight: 700;
 	margin-bottom: 0.5rem;
 }
 
 .post-card .excerpt {
 	font-size: 0.9rem;
-	color: #777;
+	color: var(--color-text-light);
 	line-height: 1.7;
 }
 
-.featured {
-	margin-top: 2rem;
-}
-
-blockquote {
-	border-left: 3px solid #ccc;
-	padding: 0 0 0 1.5rem;
-	margin: 1.5rem 0;
-	color: #777;
-	font-style: italic;
+@media (max-width: 600px) {
+	html { font-size: 16px; }
+	main { padding: 2rem 1.25rem 3rem; }
+	.page-title { font-size: 1.8rem; }
+	.hero-image { max-height: 260px; }
+	.post-card .post-card-body { padding: 1.4rem 1.2rem; }
+	.post-card .post-card-image { height: 160px; }
 }
 
 .sr-only {
+	border: 0;
+	padding: 0;
+	margin: 0;
 	position: absolute !important;
 	height: 1px;
 	width: 1px;
 	overflow: hidden;
+	clip: rect(1px 1px 1px 1px);
 	clip: rect(1px, 1px, 1px, 1px);
+	clip-path: inset(50%);
 	white-space: nowrap;
 }
