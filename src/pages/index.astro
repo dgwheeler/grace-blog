@@ -4,6 +4,7 @@ import BaseHead from '../components/BaseHead.astro';
 import Footer from '../components/Footer.astro';
 import FormattedDate from '../components/FormattedDate.astro';
 import Header from '../components/Header.astro';
+import { Image } from 'astro:assets';
 import { SITE_DESCRIPTION, SITE_TITLE } from '../consts';
 
 const allPosts = (await getCollection('blog')).sort(
@@ -22,7 +23,7 @@ const featured = allPosts[0];
 		<style>
 			.hero {
 				text-align: center;
-				padding: 4rem 0 2.5rem;
+				padding: 2.5rem 0 1.5rem;
 			}
 			.hero h1 {
 				font-family: var(--font-display);
@@ -48,57 +49,63 @@ const featured = allPosts[0];
 			.opening {
 				max-width: 580px;
 				margin: 0 auto;
-				padding: 1rem 0 2.5rem;
+				padding: 0.5rem 0 1.5rem;
 				text-align: center;
 			}
 			.opening p {
 				font-size: 1rem;
 				line-height: 1.9;
 				color: var(--color-text);
-				margin-bottom: 1.2rem;
+				margin-bottom: 1rem;
 			}
 			.begin-reading {
-				text-align: center;
-				padding: 2.5rem 0;
+				padding: 1.5rem 0;
 				border-top: 1px solid var(--color-border-light);
 				border-bottom: 1px solid var(--color-border-light);
-				margin-bottom: 3rem;
+				margin-bottom: 1.5rem;
 			}
 			.begin-reading .label {
-				font-family: var(--font-sans);
-				font-size: 0.7rem;
-				text-transform: uppercase;
-				letter-spacing: 0.12em;
-				color: var(--color-accent);
-				font-weight: 600;
+				font-family: var(--font-serif);
+				font-style: italic;
+				font-size: 1rem;
+				color: var(--color-text-light);
 				margin-bottom: 0.8rem;
 			}
-			.begin-reading .date {
-				font-family: var(--font-sans);
-				font-size: 0.75rem;
-				color: var(--color-text-light);
-				text-transform: uppercase;
-				letter-spacing: 0.05em;
-				margin-bottom: 0.5rem;
+			.featured-content {
+				display: grid;
+				grid-template-columns: 1fr 1fr;
+				gap: 2rem;
+				align-items: flex-start;
 			}
-			.begin-reading h2 {
+			.featured-text h2 {
 				font-family: var(--font-display);
 				font-size: 1.6rem;
 				font-weight: 700;
 				margin-bottom: 0.5rem;
 			}
-			.begin-reading .excerpt {
+			.featured-text .excerpt {
 				font-size: 0.95rem;
 				color: var(--color-text-light);
 				line-height: 1.7;
-				max-width: 500px;
-				margin: 0 auto 1.2rem;
+				margin-bottom: 1.2rem;
+			}
+			.featured-image :global(img) {
+				width: 100%;
+				height: auto;
+				border-radius: 4px;
+			}
+			.featured-image .caption {
+				font-family: var(--font-sans);
+				font-size: 0.75rem;
+				color: var(--color-text-light);
+				text-align: right;
+				margin-top: 0.4rem;
 			}
 			.category-columns {
 				display: grid;
 				grid-template-columns: 1fr 1fr;
 				gap: 3rem;
-				margin: 0 0 3rem;
+				margin: 0 0 1.5rem;
 			}
 			.category-column h2 {
 				font-family: var(--font-display);
@@ -154,13 +161,13 @@ const featured = allPosts[0];
 			}
 			.dedication {
 				text-align: center;
-				padding: 2rem 0 1rem;
+				padding: 1.5rem 0 0.5rem;
 				font-family: var(--font-script);
-				font-size: 3.5rem;
+				font-size: 4rem;
 				color: var(--color-text);
 			}
 			.dedication .heart {
-				font-size: 1.2rem;
+				font-size: 1.4rem;
 				margin-top: 0.3rem;
 				color: var(--color-accent);
 			}
@@ -168,9 +175,15 @@ const featured = allPosts[0];
 				.hero h1 {
 					font-size: 2.4rem;
 				}
+				.featured-content {
+					grid-template-columns: 1fr;
+				}
 				.category-columns {
 					grid-template-columns: 1fr;
 					gap: 2rem;
+				}
+				.dedication {
+					font-size: 3rem;
 				}
 			}
 		</style>
@@ -187,16 +200,27 @@ const featured = allPosts[0];
 			<div class="opening">
 				<p>Every afternoon at 2:30, I stand at the school gate and wait for my daughters to walk out.</p>
 				<p>They experience the world a little differently, and raising them has taught me to notice things I might once have missed.</p>
-				<p>These essays are small moments from our life — the waiting, the worrying, the laughter — and the quiet learning that comes after two-thirty.</p>
+				<p>These essays are small moments from our life — the waiting, the worrying, the laughter — and the quiet learning that comes <em>after two-thirty.</em></p>
 			</div>
 
 			{featured && (
 				<div class="begin-reading">
 					<p class="label">Begin Reading</p>
-					<p class="date"><FormattedDate date={featured.data.pubDate} /></p>
-					<h2>{featured.data.title}</h2>
-					<p class="excerpt">{featured.data.description}</p>
-					<a class="btn-read" href={`/blog/${featured.id}/`}>Read Essay →</a>
+					<div class="featured-content">
+						<div class="featured-text">
+							<h2>{featured.data.title}</h2>
+							<p class="excerpt">{featured.data.description}</p>
+							<a class="btn-read" href={`/blog/${featured.id}/`}>Read Essay →</a>
+						</div>
+						{featured.data.heroImage ? (
+							<div class="featured-image">
+								<Image src={featured.data.heroImage} alt={featured.data.title} />
+								<p class="caption">Drawing by Vicky</p>
+							</div>
+						) : (
+							<div class="featured-image"></div>
+						)}
+					</div>
 				</div>
 			)}
 

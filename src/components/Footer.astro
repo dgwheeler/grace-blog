@@ -4,13 +4,13 @@ const today = new Date();
 
 <footer>
 	<div class="footer-nav">
-		<a href="/">Home</a>
-		<span class="footer-sep">|</span>
 		<a href="/blog">Essays</a>
 		<span class="footer-sep">|</span>
 		<a href="/why-i-write">Why I Write</a>
 		<span class="footer-sep">|</span>
 		<a href="/about">About</a>
+		<span class="footer-sep">|</span>
+		<span class="footer-text">Drawings by Vicky and Sydney</span>
 	</div>
 	<slot />
 </footer>
@@ -45,6 +45,12 @@ const today = new Date();
 		color: var(--color-border);
 		font-size: 0.9rem;
 		user-select: none;
+	}
+	.footer-nav :global(.footer-text) {
+		font-family: var(--font-serif);
+		font-size: 0.88rem;
+		color: var(--color-text);
+		padding: 0 1rem;
 	}
 	@media (max-width: 600px) {
 		.footer-nav :global(a) {
