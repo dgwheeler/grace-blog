@@ -4,102 +4,98 @@ import BaseHead from '../../components/BaseHead.astro';
 import Footer from '../../components/Footer.astro';
 import FormattedDate from '../../components/FormattedDate.astro';
 import Header from '../../components/Header.astro';
-import { Image } from 'astro:assets';
 import { SITE_DESCRIPTION, SITE_TITLE } from '../../consts';
 
-const posts = (await getCollection('blog')).sort(
+const allPosts = (await getCollection('blog')).sort(
 	(a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf(),
 );
+
+const afterPosts = allPosts.filter(p => p.data.category === 'after-two-thirty');
+const beforePosts = allPosts.filter(p => p.data.category === 'before-two-thirty');
 ---
 
 <!doctype html>
 <html lang="en">
 	<head>
-		<BaseHead title={SITE_TITLE} description={SITE_DESCRIPTION} />
+		<BaseHead title={`Essays — ${SITE_TITLE}`} description={SITE_DESCRIPTION} />
 		<style>
-			main {
-				width: 960px;
+			.page-header {
+				margin-bottom: 2.5rem;
 			}
-			ul {
-				display: flex;
-				flex-wrap: wrap;
-				gap: 2rem;
-				list-style-type: none;
-				margin: 0;
+			.page-header h1 {
+				font-family: var(--font-display);
+				font-size: 2.2rem;
+				font-weight: 700;
+				margin-bottom: 0.3rem;
+			}
+			.category-section {
+				margin-bottom: 3rem;
+			}
+			.category-section h2 {
+				font-family: var(--font-display);
+				font-size: 1.4rem;
+				font-weight: 700;
+				color: var(--color-text);
+				margin-bottom: 0.2rem;
+			}
+			.category-section .subtitle {
+				font-family: var(--font-serif);
+				font-style: italic;
+				font-size: 0.9rem;
+				color: var(--color-text-light);
+				margin-bottom: 1.2rem;
+			}
+			.essay-list {
+				list-style: none;
 				padding: 0;
+				margin: 0;
 			}
-			ul li {
-				width: calc(50% - 1rem);
+			.essay-item {
+				border-bottom: 1px solid var(--color-border-light);
+				padding: 1rem 0;
 			}
-			ul li * {
+			.essay-item:last-child {
+				border-bottom: none;
+			}
+			.essay-item a {
 				text-decoration: none;
-				transition: 0.2s ease;
-			}
-			ul li:first-child {
-				width: 100%;
-				margin-bottom: 1rem;
-				text-align: center;
-			}
-			ul li:first-child .title {
-				font-size: 2.369rem;
-			}
-			ul li:first-child img {
-				width: 100%;
-				height: auto;
-				margin-bottom: 0.5rem;
-				border-radius: 12px;
-			}
-			ul li:not(:first-child) a {
-				display: flex;
-				gap: 1rem;
-				align-items: flex-start;
-			}
-			ul li:not(:first-child) img {
-				width: 200px;
-				min-width: 200px;
-				height: auto;
-				border-radius: 8px;
-				object-fit: cover;
-			}
-			ul li:first-child a {
+				color: inherit;
 				display: block;
 			}
-			.title {
+			.essay-item a:hover h3 {
+				color: var(--color-accent-dark);
+			}
+			.essay-item .date {
+				font-family: var(--font-sans);
+				font-size: 0.72rem;
+				color: var(--color-text-light);
+				text-transform: uppercase;
+				letter-spacing: 0.05em;
+				display: block;
+				margin-bottom: 0.3rem;
+			}
+			.essay-item h3 {
+				font-family: var(--font-display);
+				font-size: 1.15rem;
+				font-weight: 700;
+				margin-bottom: 0.3rem;
+				transition: color 0.2s;
+			}
+			.essay-item .description {
+				font-size: 0.9rem;
+				color: var(--color-text-light);
+				line-height: 1.7;
 				margin: 0;
-				color: rgb(var(--black));
-				line-height: 1;
 			}
-			.date {
-				margin: 0;
-				color: rgb(var(--gray));
+			.empty {
+				color: var(--color-text-light);
+				font-style: italic;
+				font-size: 0.9rem;
+				padding: 1rem 0;
 			}
-			ul li a:hover h4,
-			ul li a:hover .date {
-				color: rgb(var(--accent));
-			}
-			ul a:hover img {
-				box-shadow: var(--box-shadow);
-			}
-			@media (max-width: 720px) {
-				ul {
-					gap: 0.5em;
-				}
-				ul li {
-					width: 100%;
-					text-align: center;
-				}
-				ul li:first-child {
-					margin-bottom: 0;
-				}
-				ul li:first-child .title {
-					font-size: 1.563em;
-				}
-				ul li:not(:first-child) a {
-					flex-direction: column;
-				}
-				ul li:not(:first-child) img {
-					width: 100%;
-					min-width: unset;
+			@media (max-width: 600px) {
+				.page-header h1 {
+					font-size: 1.8rem;
 				}
 			}
 		</style>
@@ -107,24 +103,51 @@ const posts = (await getCollection('blog')).sort(
 	<body>
 		<Header />
 		<main>
-			<section>
-				<ul>
-					{
-						posts.map((post) => (
-							<li>
+			<div class="page-header">
+				<h1>Essays</h1>
+			</div>
+			<div class="divider"></div>
+
+			<section class="category-section">
+				<h2>After Two Thirty</h2>
+				<p class="subtitle">Stories from the school gate</p>
+				{afterPosts.length > 0 ? (
+					<ul class="essay-list">
+						{afterPosts.map(post => (
+							<li class="essay-item">
 								<a href={`/blog/${post.id}/`}>
-									{post.data.heroImage && <Image src={post.data.heroImage} alt={post.data.title} />}
-									<div>
-										<h4 class="title">{post.data.title}</h4>
-										<p class="date">
-											<FormattedDate date={post.data.pubDate} />
-										</p>
-									</div>
+									<span class="date"><FormattedDate date={post.data.pubDate} /></span>
+									<h3>{post.data.title}</h3>
+									<p class="description">{post.data.description}</p>
 								</a>
 							</li>
-						))
-					}
-				</ul>
+						))}
+					</ul>
+				) : (
+					<p class="empty">Essays coming soon.</p>
+				)}
+			</section>
+
+			<div class="divider"></div>
+
+			<section class="category-section">
+				<h2>Before Two Thirty</h2>
+				<p class="subtitle">The world children are growing into</p>
+				{beforePosts.length > 0 ? (
+					<ul class="essay-list">
+						{beforePosts.map(post => (
+							<li class="essay-item">
+								<a href={`/blog/${post.id}/`}>
+									<span class="date"><FormattedDate date={post.data.pubDate} /></span>
+									<h3>{post.data.title}</h3>
+									<p class="description">{post.data.description}</p>
+								</a>
+							</li>
+						))}
+					</ul>
+				) : (
+					<p class="empty">Essays coming soon.</p>
+				)}
 			</section>
 		</main>
 		<Footer />

@@ -13,6 +13,7 @@ const blog = defineCollection({
 			pubDate: z.coerce.date(),
 			updatedDate: z.coerce.date().optional(),
 			heroImage: image().optional(),
+			category: z.enum(['after-two-thirty', 'before-two-thirty']).default('after-two-thirty'),
 		}),
 });
 
