@@ -6,13 +6,22 @@ import FormattedDate from '../components/FormattedDate.astro';
 import Header from '../components/Header.astro';
 import { Image } from 'astro:assets';
 import { SITE_DESCRIPTION, SITE_TITLE } from '../consts';
+import { CATEGORIES, getCategoryLabel, getCategorySubtitle } from '../categories';
 
 const allPosts = (await getCollection('blog')).sort(
 	(a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf(),
 );
 
-const afterPosts = allPosts.filter(p => p.data.category === 'after-two-thirty');
-const beforePosts = allPosts.filter(p => p.data.category === 'before-two-thirty');
+// Discover categories from posts, ordered by CATEGORIES config
+const usedSlugs = [...new Set(allPosts.map(p => p.data.category).filter(Boolean))];
+const orderedCategories = CATEGORIES.length > 0
+	? CATEGORIES.filter(c => usedSlugs.includes(c.slug))
+	: usedSlugs.map(slug => ({ slug, label: slug, subtitle: '' }));
+
+const postsByCategory = Object.fromEntries(
+	orderedCategories.map(c => [c.slug, allPosts.filter(p => p.data.category === c.slug)])
+);
+
 const featured = allPosts[0];
 ---
 
@@ -159,21 +168,6 @@ const featured = allPosts[0];
 				font-size: 0.9rem;
 				padding: 0.5rem 0;
 			}
-			.dedication {
-				text-align: center;
-				padding: 1.5rem 0 0.5rem;
-				font-family: var(--font-script);
-				color: var(--color-text);
-			}
-			.dedication p {
-				font-size: 3rem;
-				margin-bottom: 0;
-			}
-			.dedication .heart {
-				font-size: 1.4rem;
-				margin-top: 0.3rem;
-				color: var(--color-accent);
-			}
 			@media (max-width: 600px) {
 				.hero h1 {
 					font-size: 2.4rem;
@@ -184,9 +178,6 @@ const featured = allPosts[0];
 				.category-columns {
 					grid-template-columns: 1fr;
 					gap: 2rem;
-				}
-				.dedication p {
-					font-size: 2.2rem;
 				}
 			}
 		</style>
@@ -228,43 +219,25 @@ const featured = allPosts[0];
 			)}
 
 			<div class="category-columns">
-				<div class="category-column">
-					<h2>After Two Thirty</h2>
-					<p class="subtitle">Stories from the school gate</p>
-					<ul class="essay-list">
-						{afterPosts.map(post => (
-							<li>
-								<a href={`/blog/${post.id}/`}>
-									<h3>{post.data.title}</h3>
-									<span class="date"><FormattedDate date={post.data.pubDate} /></span>
-								</a>
-							</li>
-						))}
-						{afterPosts.length === 0 && <li><p class="empty">Essays coming soon.</p></li>}
-					</ul>
-				</div>
-				<div class="category-column">
-					<h2>Before Two Thirty</h2>
-					<p class="subtitle">The world children are growing into</p>
-					<ul class="essay-list">
-						{beforePosts.map(post => (
-							<li>
-								<a href={`/blog/${post.id}/`}>
-									<h3>{post.data.title}</h3>
-									<span class="date"><FormattedDate date={post.data.pubDate} /></span>
-								</a>
-							</li>
-						))}
-						{beforePosts.length === 0 && <li><p class="empty">Essays coming soon.</p></li>}
-					</ul>
-				</div>
+				{orderedCategories.map(cat => (
+					<div class="category-column">
+						<h2>{cat.label}</h2>
+						{cat.subtitle && <p class="subtitle">{cat.subtitle}</p>}
+						<ul class="essay-list">
+							{(postsByCategory[cat.slug] || []).map(post => (
+								<li>
+									<a href={`/blog/${post.id}/`}>
+										<h3>{post.data.title}</h3>
+										<span class="date"><FormattedDate date={post.data.pubDate} /></span>
+									</a>
+								</li>
+							))}
+							{(postsByCategory[cat.slug] || []).length === 0 && <li><p class="empty">Essays coming soon.</p></li>}
+						</ul>
+					</div>
+				))}
 			</div>
 		</main>
-		<Footer>
-			<div class="dedication">
-				<p>For Vicky and Sydney</p>
-				<div class="heart">&#x1F331;</div>
-			</div>
-		</Footer>
+		<Footer />
 	</body>
 </html>

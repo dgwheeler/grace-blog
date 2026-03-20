@@ -5,13 +5,21 @@ import Footer from '../../components/Footer.astro';
 import FormattedDate from '../../components/FormattedDate.astro';
 import Header from '../../components/Header.astro';
 import { SITE_DESCRIPTION, SITE_TITLE } from '../../consts';
+import { CATEGORIES, getCategoryLabel, getCategorySubtitle } from '../../categories';
 
 const allPosts = (await getCollection('blog')).sort(
 	(a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf(),
 );
 
-const afterPosts = allPosts.filter(p => p.data.category === 'after-two-thirty');
-const beforePosts = allPosts.filter(p => p.data.category === 'before-two-thirty');
+// Discover categories from posts, ordered by CATEGORIES config
+const usedSlugs = [...new Set(allPosts.map(p => p.data.category).filter(Boolean))];
+const orderedCategories = CATEGORIES.length > 0
+	? CATEGORIES.filter(c => usedSlugs.includes(c.slug))
+	: usedSlugs.map(slug => ({ slug, label: slug, subtitle: '' }));
+
+const postsByCategory = Object.fromEntries(
+	orderedCategories.map(c => [c.slug, allPosts.filter(p => p.data.category === c.slug)])
+);
 ---
 
 <!doctype html>
@@ -106,49 +114,30 @@ const beforePosts = allPosts.filter(p => p.data.category === 'before-two-thirty'
 			<div class="page-header">
 				<h1>Essays</h1>
 			</div>
-			<div class="divider"></div>
-
-			<section class="category-section">
-				<h2>After Two Thirty</h2>
-				<p class="subtitle">Stories from the school gate</p>
-				{afterPosts.length > 0 ? (
-					<ul class="essay-list">
-						{afterPosts.map(post => (
-							<li class="essay-item">
-								<a href={`/blog/${post.id}/`}>
-									<span class="date"><FormattedDate date={post.data.pubDate} /></span>
-									<h3>{post.data.title}</h3>
-									<p class="description">{post.data.description}</p>
-								</a>
-							</li>
-						))}
-					</ul>
-				) : (
-					<p class="empty">Essays coming soon.</p>
-				)}
-			</section>
-
-			<div class="divider"></div>
-
-			<section class="category-section">
-				<h2>Before Two Thirty</h2>
-				<p class="subtitle">The world children are growing into</p>
-				{beforePosts.length > 0 ? (
-					<ul class="essay-list">
-						{beforePosts.map(post => (
-							<li class="essay-item">
-								<a href={`/blog/${post.id}/`}>
-									<span class="date"><FormattedDate date={post.data.pubDate} /></span>
-									<h3>{post.data.title}</h3>
-									<p class="description">{post.data.description}</p>
-								</a>
-							</li>
-						))}
-					</ul>
-				) : (
-					<p class="empty">Essays coming soon.</p>
-				)}
-			</section>
+			{orderedCategories.map((cat, i) => (
+				<>
+					<div class="divider"></div>
+					<section class="category-section">
+						<h2>{cat.label}</h2>
+						{cat.subtitle && <p class="subtitle">{cat.subtitle}</p>}
+						{(postsByCategory[cat.slug] || []).length > 0 ? (
+							<ul class="essay-list">
+								{(postsByCategory[cat.slug] || []).map(post => (
+									<li class="essay-item">
+										<a href={`/blog/${post.id}/`}>
+											<span class="date"><FormattedDate date={post.data.pubDate} /></span>
+											<h3>{post.data.title}</h3>
+											<p class="description">{post.data.description}</p>
+										</a>
+									</li>
+								))}
+							</ul>
+						) : (
+							<p class="empty">Essays coming soon.</p>
+						)}
+					</section>
+				</>
+			))}
 		</main>
 		<Footer />
 	</body>
