@@ -10,14 +10,17 @@ const allPosts = (await getCollection('blog')).sort(
 	(a, b) => (a.data.order ?? 9999) - (b.data.order ?? 9999),
 );
 
+// Normalize slugs: treat hyphens and underscores as equivalent
+const norm = (s: string) => s.replace(/[-_]/g, '-');
+
 // Discover categories from posts, ordered by CATEGORIES config
-const usedSlugs = [...new Set(allPosts.map(p => p.data.category).filter(Boolean))];
+const usedSlugs = [...new Set(allPosts.map(p => norm(p.data.category)).filter(Boolean))];
 const orderedCategories = CATEGORIES.length > 0
-	? CATEGORIES.filter(c => usedSlugs.includes(c.slug))
+	? CATEGORIES.filter(c => usedSlugs.includes(norm(c.slug)))
 	: usedSlugs.map(slug => ({ slug, label: slug, subtitle: '' }));
 
 const postsByCategory = Object.fromEntries(
-	orderedCategories.map(c => [c.slug, allPosts.filter(p => p.data.category === c.slug)])
+	orderedCategories.map(c => [c.slug, allPosts.filter(p => norm(p.data.category) === norm(c.slug))])
 );
 ---
 

@@ -5,10 +5,13 @@ import BlogPost from '../../layouts/BlogPost.astro';
 export async function getStaticPaths() {
 	const posts = await getCollection('blog');
 
+	// Normalize slugs: treat hyphens and underscores as equivalent
+	const norm = (s: string) => s.replace(/[-_]/g, '-');
+
 	// Group posts by category, sorted by order within each category
 	const postsByCategory: Record<string, typeof posts> = {};
 	for (const post of posts) {
-		const cat = post.data.category || 'uncategorized';
+		const cat = norm(post.data.category || 'uncategorized');
 		if (!postsByCategory[cat]) postsByCategory[cat] = [];
 		postsByCategory[cat].push(post);
 	}
@@ -17,7 +20,7 @@ export async function getStaticPaths() {
 	}
 
 	return posts.map((post) => {
-		const cat = post.data.category || 'uncategorized';
+		const cat = norm(post.data.category || 'uncategorized');
 		const categoryPosts = postsByCategory[cat];
 		const index = categoryPosts.findIndex(p => p.id === post.id);
 		const prev = index > 0 ? categoryPosts[index - 1] : null;
