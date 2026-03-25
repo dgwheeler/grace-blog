@@ -1,6 +1,6 @@
 /*
   Literary design for After Two Thirty.
-  Cormorant Garamond for headings and body,
+  Libre Baskerville for headings and body,
   sans-serif accents (Inter), decorative script (Caveat).
  */
 
@@ -19,8 +19,8 @@
 	--color-border: #c8ced6;
 	--color-border-light: #e0e4e8;
 	--color-card-bg: #ffffff;
-	--font-serif: 'Cormorant Garamond', Georgia, 'Times New Roman', serif;
-	--font-display: 'Cormorant Garamond', Georgia, serif;
+	--font-serif: 'Libre Baskerville', Georgia, 'Times New Roman', serif;
+	--font-display: 'Libre Baskerville', Georgia, serif;
 	--font-sans: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
 	--font-script: 'Caveat', cursive;
 }
