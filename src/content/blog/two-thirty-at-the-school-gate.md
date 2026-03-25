@@ -6,7 +6,6 @@ heroImage: '../../assets/blog/two-thirty-at-the-school-gate.png'
 category: 'after-two-thirty'
 ---
 
-
 Every afternoon at 2:30, I stand at the school gate and wait.
 
 Some parents are chatting. Some are scrolling on their phones. Some are already smiling and waving.
