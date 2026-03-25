@@ -3,12 +3,25 @@ import { type CollectionEntry, getCollection, render } from 'astro:content';
 import BlogPost from '../../layouts/BlogPost.astro';
 
 export async function getStaticPaths() {
-	const posts = (await getCollection('blog')).sort(
-		(a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf(),
-	);
-	return posts.map((post, index) => {
-		const prev = index < posts.length - 1 ? posts[index + 1] : null;
-		const next = index > 0 ? posts[index - 1] : null;
+	const posts = await getCollection('blog');
+
+	// Group posts by category, sorted by order within each category
+	const postsByCategory: Record<string, typeof posts> = {};
+	for (const post of posts) {
+		const cat = post.data.category || 'uncategorized';
+		if (!postsByCategory[cat]) postsByCategory[cat] = [];
+		postsByCategory[cat].push(post);
+	}
+	for (const cat of Object.keys(postsByCategory)) {
+		postsByCategory[cat].sort((a, b) => (a.data.order ?? 9999) - (b.data.order ?? 9999));
+	}
+
+	return posts.map((post) => {
+		const cat = post.data.category || 'uncategorized';
+		const categoryPosts = postsByCategory[cat];
+		const index = categoryPosts.findIndex(p => p.id === post.id);
+		const prev = index > 0 ? categoryPosts[index - 1] : null;
+		const next = index < categoryPosts.length - 1 ? categoryPosts[index + 1] : null;
 		return {
 			params: { slug: post.id },
 			props: {

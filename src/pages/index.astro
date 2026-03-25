@@ -2,14 +2,13 @@
 import { getCollection } from 'astro:content';
 import BaseHead from '../components/BaseHead.astro';
 import Footer from '../components/Footer.astro';
-import FormattedDate from '../components/FormattedDate.astro';
 import Header from '../components/Header.astro';
 import { Image } from 'astro:assets';
 import { SITE_DESCRIPTION, SITE_TITLE } from '../consts';
-import { CATEGORIES, getCategoryLabel, getCategorySubtitle } from '../categories';
+import { CATEGORIES } from '../categories';
 
 const allPosts = (await getCollection('blog')).sort(
-	(a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf(),
+	(a, b) => (a.data.order ?? 9999) - (b.data.order ?? 9999),
 );
 
 // Discover categories from posts, ordered by CATEGORIES config
@@ -23,6 +22,7 @@ const postsByCategory = Object.fromEntries(
 );
 
 const featured = allPosts[0];
+const thumbnailPosts = allPosts.filter(p => p.data.heroImage).slice(0, 3);
 ---
 
 <!doctype html>
@@ -31,8 +31,7 @@ const featured = allPosts[0];
 		<BaseHead title={SITE_TITLE} description={SITE_DESCRIPTION} />
 		<style>
 			.hero {
-				text-align: center;
-				padding: 2.5rem 0 1.5rem;
+				padding: 2.5rem 0 0;
 			}
 			.hero h1 {
 				font-family: var(--font-display);
@@ -42,12 +41,6 @@ const featured = allPosts[0];
 				letter-spacing: -0.01em;
 				margin-bottom: 0.3rem;
 			}
-			.hero-line {
-				width: 200px;
-				height: 2px;
-				background: var(--color-accent);
-				margin: 0.4rem auto;
-			}
 			.hero .tagline {
 				font-family: var(--font-serif);
 				font-style: italic;
@@ -55,30 +48,17 @@ const featured = allPosts[0];
 				font-size: 1.15rem;
 				margin-top: 0.3rem;
 			}
-			.opening {
-				max-width: 580px;
-				margin: 0 auto;
-				padding: 0.5rem 0 1.5rem;
-				text-align: center;
+			.section-line {
+				width: 100%;
+				height: 1px;
+				background: var(--color-border-light);
+				margin: 1.5rem 0;
 			}
-			.opening p {
-				font-size: 1rem;
-				line-height: 1.9;
-				color: var(--color-text);
+			.featured-title {
+				font-family: var(--font-display);
+				font-size: 1.6rem;
+				font-weight: 700;
 				margin-bottom: 1rem;
-			}
-			.begin-reading {
-				padding: 1.5rem 0;
-				border-top: 1px solid var(--color-border-light);
-				border-bottom: 1px solid var(--color-border-light);
-				margin-bottom: 1.5rem;
-			}
-			.begin-reading .label {
-				font-family: var(--font-serif);
-				font-style: italic;
-				font-size: 1rem;
-				color: var(--color-text-light);
-				margin-bottom: 0.8rem;
 			}
 			.featured-content {
 				display: grid;
@@ -86,48 +66,42 @@ const featured = allPosts[0];
 				gap: 2rem;
 				align-items: flex-start;
 			}
-			.featured-text h2 {
-				font-family: var(--font-display);
-				font-size: 1.6rem;
-				font-weight: 700;
-				margin-bottom: 0.5rem;
-			}
 			.featured-text .excerpt {
 				font-size: 0.95rem;
 				color: var(--color-text-light);
 				line-height: 1.7;
 				margin-bottom: 1.2rem;
 			}
+			.read-link {
+				font-family: var(--font-serif);
+				font-size: 1rem;
+				color: var(--color-text);
+				text-decoration: none;
+				transition: color 0.2s;
+			}
+			.read-link:hover {
+				color: var(--color-accent-dark);
+			}
 			.featured-image :global(img) {
 				width: 100%;
 				height: auto;
 				border-radius: 4px;
 			}
-			.featured-image .caption {
-				font-family: var(--font-sans);
-				font-size: 0.75rem;
-				color: var(--color-text-light);
-				text-align: right;
-				margin-top: 0.4rem;
+			.category-section {
+				margin-bottom: 0;
 			}
-			.category-columns {
-				display: grid;
-				grid-template-columns: 1fr 1fr;
-				gap: 3rem;
-				margin: 0 0 1.5rem;
-			}
-			.category-column h2 {
+			.category-section h2 {
 				font-family: var(--font-display);
 				font-size: 1.3rem;
 				font-weight: 700;
 				margin-bottom: 0.2rem;
 			}
-			.category-column .subtitle {
+			.category-section .subtitle {
 				font-family: var(--font-serif);
 				font-style: italic;
 				font-size: 0.88rem;
 				color: var(--color-text-light);
-				margin-bottom: 1.2rem;
+				margin-bottom: 1rem;
 			}
 			.essay-list {
 				list-style: none;
@@ -135,32 +109,54 @@ const featured = allPosts[0];
 				margin: 0;
 			}
 			.essay-list li {
-				border-bottom: 1px solid var(--color-border-light);
-				padding: 0.7rem 0;
+				padding: 0.5rem 0;
 			}
-			.essay-list li:last-child {
-				border-bottom: none;
+			.essay-list li::before {
+				content: '·';
+				margin-right: 0.6rem;
+				color: var(--color-text-light);
 			}
 			.essay-list a {
+				font-family: var(--font-serif);
+				font-size: 0.95rem;
 				text-decoration: none;
-				color: inherit;
-			}
-			.essay-list a:hover h3 {
-				color: var(--color-accent-dark);
-			}
-			.essay-list h3 {
-				font-family: var(--font-display);
-				font-size: 1rem;
-				font-weight: 600;
-				margin-bottom: 0.15rem;
+				color: var(--color-text);
 				transition: color 0.2s;
 			}
-			.essay-list .date {
-				font-family: var(--font-sans);
-				font-size: 0.7rem;
-				color: var(--color-text-light);
-				text-transform: uppercase;
-				letter-spacing: 0.05em;
+			.essay-list a:hover {
+				color: var(--color-accent-dark);
+			}
+			.pagination {
+				display: flex;
+				justify-content: space-between;
+				align-items: center;
+				margin-top: 0.8rem;
+				font-family: var(--font-serif);
+				font-size: 0.88rem;
+			}
+			.pagination a {
+				color: var(--color-text);
+				text-decoration: none;
+				cursor: pointer;
+				transition: color 0.2s;
+			}
+			.pagination a:hover {
+				color: var(--color-accent-dark);
+			}
+			.pagination a.disabled {
+				visibility: hidden;
+			}
+			.thumbnails {
+				display: flex;
+				gap: 1rem;
+				justify-content: center;
+				padding: 0.5rem 0 1rem;
+			}
+			.thumbnails :global(img) {
+				width: 120px;
+				height: 90px;
+				object-fit: cover;
+				border-radius: 4px;
 			}
 			.empty {
 				color: var(--color-text-light);
@@ -175,9 +171,9 @@ const featured = allPosts[0];
 				.featured-content {
 					grid-template-columns: 1fr;
 				}
-				.category-columns {
-					grid-template-columns: 1fr;
-					gap: 2rem;
+				.thumbnails :global(img) {
+					width: 90px;
+					height: 68px;
 				}
 			}
 		</style>
@@ -187,57 +183,106 @@ const featured = allPosts[0];
 		<main>
 			<div class="hero">
 				<h1>{SITE_TITLE}</h1>
-				<div class="hero-line"></div>
 				<p class="tagline">{SITE_DESCRIPTION}</p>
 			</div>
-
-			<div class="opening">
-				<p>Every afternoon at 2:30, I stand at the school gate and wait for my daughters to walk out.</p>
-				<p>They experience the world a little differently, and raising them has taught me to notice things I might once have missed.</p>
-				<p>These essays are small moments from our life — the waiting, the worrying, the laughter — and the quiet learning that comes <em>after two-thirty.</em></p>
-			</div>
+			<div class="section-line"></div>
 
 			{featured && (
-				<div class="begin-reading">
-					<p class="label">Begin Reading</p>
+				<section>
+					<h2 class="featured-title">{featured.data.title}</h2>
 					<div class="featured-content">
 						<div class="featured-text">
-							<h2>{featured.data.title}</h2>
 							<p class="excerpt">{featured.data.description}</p>
-							<a class="btn-read" href={`/blog/${featured.id}/`}>Read Essay →</a>
+							<a class="read-link" href={`/blog/${featured.id}/`}>Read →</a>
 						</div>
 						{featured.data.heroImage ? (
 							<div class="featured-image">
 								<Image src={featured.data.heroImage} alt={featured.data.title} />
-								<p class="caption">Drawing by Vicky</p>
 							</div>
 						) : (
 							<div class="featured-image"></div>
 						)}
 					</div>
-				</div>
+					<div class="section-line"></div>
+				</section>
 			)}
 
-			<div class="category-columns">
-				{orderedCategories.map(cat => (
-					<div class="category-column">
-						<h2>{cat.label}</h2>
-						{cat.subtitle && <p class="subtitle">{cat.subtitle}</p>}
-						<ul class="essay-list">
-							{(postsByCategory[cat.slug] || []).map(post => (
-								<li>
-									<a href={`/blog/${post.id}/`}>
-										<h3>{post.data.title}</h3>
-										<span class="date"><FormattedDate date={post.data.pubDate} /></span>
-									</a>
-								</li>
-							))}
-							{(postsByCategory[cat.slug] || []).length === 0 && <li><p class="empty">Essays coming soon.</p></li>}
-						</ul>
-					</div>
-				))}
-			</div>
+			{orderedCategories.map(cat => (
+				<section class="category-section" data-category={cat.slug}>
+					<h2>{cat.label}</h2>
+					{cat.subtitle && <p class="subtitle">{cat.subtitle}</p>}
+					{(postsByCategory[cat.slug] || []).length > 0 ? (
+						<>
+							<ul class="essay-list" data-page-size="4">
+								{(postsByCategory[cat.slug] || []).map(post => (
+									<li>
+										<a href={`/blog/${post.id}/`}>{post.data.title}</a>
+									</li>
+								))}
+							</ul>
+							{(postsByCategory[cat.slug] || []).length > 4 && (
+								<div class="pagination">
+									<a class="page-prev disabled">← Previous</a>
+									<a class="page-next">Next →</a>
+								</div>
+							)}
+						</>
+					) : (
+						<p class="empty">Essays coming soon.</p>
+					)}
+					<div class="section-line"></div>
+				</section>
+			))}
+
+			{thumbnailPosts.length > 0 && (
+				<div class="thumbnails">
+					{thumbnailPosts.map(post => (
+						<a href={`/blog/${post.id}/`}>
+							<Image src={post.data.heroImage} alt={post.data.title} width={120} height={90} />
+						</a>
+					))}
+				</div>
+			)}
 		</main>
 		<Footer />
+
+		<script>
+			document.querySelectorAll('.essay-list[data-page-size]').forEach(list => {
+				const pageSize = parseInt(list.getAttribute('data-page-size') || '4');
+				const items = Array.from(list.children);
+				if (items.length <= pageSize) return;
+
+				let page = 0;
+				const totalPages = Math.ceil(items.length / pageSize);
+				const section = list.closest('section');
+				const prevBtn = section?.querySelector('.page-prev');
+				const nextBtn = section?.querySelector('.page-next');
+
+				function render() {
+					const start = page * pageSize;
+					const end = start + pageSize;
+					items.forEach((item, i) => {
+						(item as HTMLElement).style.display = (i >= start && i < end) ? '' : 'none';
+					});
+					if (prevBtn) {
+						prevBtn.classList.toggle('disabled', page === 0);
+					}
+					if (nextBtn) {
+						nextBtn.classList.toggle('disabled', page >= totalPages - 1);
+					}
+				}
+
+				prevBtn?.addEventListener('click', (e) => {
+					e.preventDefault();
+					if (page > 0) { page--; render(); }
+				});
+				nextBtn?.addEventListener('click', (e) => {
+					e.preventDefault();
+					if (page < totalPages - 1) { page++; render(); }
+				});
+
+				render();
+			});
+		</script>
 	</body>
 </html>

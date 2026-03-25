@@ -220,21 +220,18 @@ article .signature {
 	color: var(--color-text-light);
 }
 
-/* Read button */
+/* Read link */
 .btn-read {
 	display: inline-block;
 	font-family: var(--font-serif);
 	font-size: 1rem;
-	color: #fff;
-	background: var(--color-accent);
-	padding: 0.6rem 1.6rem;
-	border-radius: 4px;
+	color: var(--color-text);
 	text-decoration: none;
-	transition: background 0.2s;
+	transition: color 0.2s;
 }
 
 .btn-read:hover {
-	background: var(--color-accent-dark);
+	color: var(--color-accent-dark);
 }
 
 /* Post cards */
