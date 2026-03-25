@@ -1,6 +1,6 @@
 /*
   Literary design for After Two Thirty.
-  Libre Baskerville for headings and body,
+  Cormorant Garamond for headings and body,
   sans-serif accents (Inter), decorative script (Caveat).
  */
 
@@ -19,8 +19,8 @@
 	--color-border: #c8ced6;
 	--color-border-light: #e0e4e8;
 	--color-card-bg: #ffffff;
-	--font-serif: 'Libre Baskerville', Georgia, 'Times New Roman', serif;
-	--font-display: 'Libre Baskerville', Georgia, serif;
+	--font-serif: 'Cormorant Garamond', Georgia, 'Times New Roman', serif;
+	--font-display: 'Cormorant Garamond', Georgia, serif;
 	--font-sans: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
 	--font-script: 'Caveat', cursive;
 }
@@ -57,25 +57,25 @@ h1, h2, h3, h4, h5, h6 {
 
 h1 {
 	font-size: 2.2rem;
-	font-weight: 700;
+	font-weight: 400;
 	letter-spacing: -0.01em;
 }
 
 h2 {
 	font-size: 1.5rem;
-	font-weight: 700;
+	font-weight: 400;
 	margin-top: 2.5rem;
 	letter-spacing: -0.01em;
 }
 
 h3 {
 	font-size: 1.25rem;
-	font-weight: 700;
+	font-weight: 400;
 	margin-top: 2rem;
 }
 
-h4 { font-size: 1.1rem; font-weight: 700; margin-top: 1.5rem; }
-h5 { font-size: 1rem; font-weight: 700; margin-top: 1.5rem; }
+h4 { font-size: 1.1rem; font-weight: 400; margin-top: 1.5rem; }
+h5 { font-size: 1rem; font-weight: 400; margin-top: 1.5rem; }
 
 strong, b { font-weight: 600; }
 
@@ -177,7 +177,7 @@ li {
 .page-title {
 	font-family: var(--font-display);
 	font-size: 2.2rem;
-	font-weight: 700;
+	font-weight: 400;
 	margin-bottom: 0.3rem;
 	letter-spacing: -0.01em;
 	color: var(--color-text);
@@ -266,7 +266,7 @@ article .signature {
 .post-card h3 {
 	font-family: var(--font-display);
 	font-size: 1.2rem;
-	font-weight: 700;
+	font-weight: 400;
 	margin-bottom: 0.5rem;
 }
 
