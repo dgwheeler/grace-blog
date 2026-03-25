@@ -3,7 +3,6 @@ import { getCollection } from 'astro:content';
 import BaseHead from '../components/BaseHead.astro';
 import Footer from '../components/Footer.astro';
 import Header from '../components/Header.astro';
-import { Image } from 'astro:assets';
 import { SITE_DESCRIPTION, SITE_TITLE } from '../consts';
 import { CATEGORIES } from '../categories';
 
@@ -199,7 +198,7 @@ const thumbnailPosts = allPosts.filter(p => p.data.heroImage).slice(0, 3);
 						</div>
 						{featured.data.heroImage ? (
 							<div class="featured-image">
-								<Image src={featured.data.heroImage} alt={featured.data.title} />
+								<img src={typeof featured.data.heroImage === 'string' ? featured.data.heroImage : featured.data.heroImage.src} alt={featured.data.title} />
 							</div>
 						) : (
 							<div class="featured-image"></div>
@@ -240,7 +239,7 @@ const thumbnailPosts = allPosts.filter(p => p.data.heroImage).slice(0, 3);
 				<div class="thumbnails">
 					{thumbnailPosts.map(post => (
 						<a href={`/blog/${post.id}/`}>
-							<Image src={post.data.heroImage} alt={post.data.title} width={120} height={90} />
+							<img src={typeof post.data.heroImage === 'string' ? post.data.heroImage : post.data.heroImage.src} alt={post.data.title} />
 						</a>
 					))}
 				</div>
