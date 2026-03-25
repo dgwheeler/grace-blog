@@ -2,7 +2,8 @@
 title: 'The Five Extra Minutes'
 description: 'The Five Extra Minutes'
 pubDate: '2026-03-25T13:23:25.541077'
-order: 2
+category: 'after_two_thirty'
+order: 3
 ---
 
 We set a twenty-minute timer.

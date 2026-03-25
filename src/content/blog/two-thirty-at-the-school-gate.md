@@ -2,8 +2,8 @@
 title: 'Two-Thirty At The School Gate'
 description: 'About me'
 pubDate: '2026-03-07T12:58:33'
-heroImage: '../../assets/blog/two-thirty-at-the-school-gate.png'
-category: 'after-two-thirty'
+heroImage: '/api/assistant/post-writer/image-projects/69bcab4b0135a2d1d8c9897d/images/upload_1773997499942'
+category: 'after_two_thirty'
 order: 1
 ---
 
