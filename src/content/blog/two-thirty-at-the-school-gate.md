@@ -4,6 +4,7 @@ description: 'About me'
 pubDate: '2026-03-07T12:58:33'
 heroImage: '../../assets/blog/two-thirty-at-the-school-gate.png'
 category: 'after-two-thirty'
+order: 1
 ---
 
 Every afternoon at 2:30, I stand at the school gate and wait.
