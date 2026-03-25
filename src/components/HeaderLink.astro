@@ -21,13 +21,8 @@ const isActive = href === pathname || href === '/' + (subpath?.[0] || '');
 		color: var(--color-text);
 		transition: color 0.2s;
 	}
-	a:hover {
-		color: var(--color-accent-dark);
-	}
+	a:hover,
 	a.active {
 		color: var(--color-accent-dark);
-		border-bottom: 2px solid var(--color-accent-dark);
-		padding-bottom: 0.3rem;
-		margin-bottom: -1rem;
 	}
 </style>

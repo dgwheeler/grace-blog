@@ -12,6 +12,9 @@ const today = new Date();
 		<span class="footer-sep">|</span>
 		<a href="/about">About</a>
 	</div>
+	<div class="dedication">
+		<p>For Vicky and Sydney</p>
+	</div>
 	<slot />
 </footer>
 <style>
@@ -29,7 +32,7 @@ const today = new Date();
 		align-items: center;
 		gap: 0;
 		flex-wrap: wrap;
-		margin-bottom: 1.8rem;
+		margin-bottom: 1.2rem;
 	}
 	.footer-nav :global(a) {
 		font-family: var(--font-serif);
@@ -54,26 +57,19 @@ const today = new Date();
 	}
 	.dedication {
 		text-align: center;
-		padding: 1.5rem 0 0.5rem;
-		font-family: var(--font-script);
-		color: var(--color-text);
+		padding: 0.5rem 0 0;
 	}
 	.dedication p {
-		font-size: 2rem;
-		margin-bottom: 0;
-	}
-	.dedication .heart {
-		font-size: 1.4rem;
-		margin-top: 0.3rem;
-		color: var(--color-accent);
+		font-family: var(--font-serif);
+		font-style: italic;
+		font-size: 0.88rem;
+		color: var(--color-text-light);
+		margin-bottom: 0.3rem;
 	}
 	@media (max-width: 600px) {
 		.footer-nav :global(a) {
 			padding: 0 0.6rem;
 			font-size: 0.8rem;
-		}
-		.dedication p {
-			font-size: 2.2rem;
 		}
 	}
 </style>
