@@ -155,11 +155,24 @@ const thumbnailPosts = allPosts.filter(p => p.data.heroImage).slice(0, 3);
 				justify-content: center;
 				padding: 0.5rem 0 1rem;
 			}
+			.thumbnails {
+				flex-wrap: wrap;
+			}
 			.thumbnails :global(img) {
 				width: 120px;
 				height: 90px;
 				object-fit: cover;
 				border-radius: 4px;
+			}
+			.thumbnails-caption {
+				width: 100%;
+				text-align: center;
+				font-family: var(--font-serif);
+				font-style: italic;
+				font-size: 0.88rem;
+				color: var(--color-text-light);
+				margin-top: 0.5rem;
+				margin-bottom: 0;
 			}
 			.empty {
 				color: var(--color-text-light);
@@ -244,6 +257,7 @@ const thumbnailPosts = allPosts.filter(p => p.data.heroImage).slice(0, 3);
 							<img src={typeof post.data.heroImage === 'string' ? post.data.heroImage : post.data.heroImage.src} alt={post.data.title} />
 						</a>
 					))}
+					<p class="thumbnails-caption">Drawings by Vicky and Sydney</p>
 				</div>
 			)}
 		</main>
