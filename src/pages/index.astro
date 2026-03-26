@@ -1,30 +1,302 @@
 ---
+import { getCollection } from 'astro:content';
 import BaseHead from '../components/BaseHead.astro';
 import Footer from '../components/Footer.astro';
 import Header from '../components/Header.astro';
-import heroImage from '../assets/blog/index.png';
+import { SITE_DESCRIPTION, SITE_TITLE, FEATURED_POST_SLUG, THUMBNAIL_IMAGES } from '../consts';
+import { CATEGORIES } from '../categories';
+
+const allPosts = (await getCollection('blog')).sort(
+	(a, b) => (a.data.order ?? 9999) - (b.data.order ?? 9999),
+);
+
+// Normalize slugs: treat hyphens and underscores as equivalent
+const norm = (s: string) => s.replace(/[-_]/g, '-');
+
+// Show all configured categories (even if empty)
+const orderedCategories = CATEGORIES.length > 0
+	? CATEGORIES
+	: [...new Set(allPosts.map(p => norm(p.data.category)).filter(Boolean))].map(slug => ({ slug, label: slug, subtitle: '' }));
+
+const postsByCategory = Object.fromEntries(
+	orderedCategories.map(c => [c.slug, allPosts.filter(p => norm(p.data.category) === norm(c.slug))])
+);
+
+const featured = FEATURED_POST_SLUG
+	? allPosts.find(p => p.id === FEATURED_POST_SLUG) || allPosts[0]
+	: allPosts[0];
 ---
 
 <!doctype html>
 <html lang="en">
 	<head>
-		<BaseHead title="Home" description="Welcome to my website!" />
+		<BaseHead title={SITE_TITLE} description={SITE_DESCRIPTION} />
 		<style>
-			article p {
-				margin-bottom: 1.4rem;
+			.hero {
+				padding: 2.5rem 0 0;
+			}
+			.hero h1 {
+				font-family: var(--font-display);
+				font-size: 3.2rem;
+				font-weight: 400;
+				color: var(--color-text);
+				letter-spacing: -0.01em;
+				margin-bottom: 0.3rem;
+			}
+			.hero .tagline {
+				font-family: var(--font-serif);
+				font-style: italic;
+				color: var(--color-text-light);
+				font-size: 1.15rem;
+				margin-top: 0.3rem;
+			}
+			.section-line {
+				width: 100%;
+				height: 1px;
+				background: var(--color-border-light);
+				margin: 1.5rem 0;
+			}
+			.featured-title {
+				font-family: var(--font-display);
+				font-size: 1.6rem;
+				font-weight: 400;
+				margin-bottom: 1rem;
+			}
+			.featured-content {
+				display: grid;
+				grid-template-columns: 1fr 1fr;
+				gap: 2rem;
+				align-items: flex-start;
+			}
+			.featured-text .excerpt {
+				font-size: 0.95rem;
+				color: var(--color-text-light);
+				line-height: 1.7;
+				margin-bottom: 1.2rem;
+			}
+			.read-link {
+				font-family: var(--font-serif);
 				font-size: 1rem;
-				line-height: 1.85;
+				color: var(--color-text);
+				text-decoration: none;
+				transition: color 0.2s;
+			}
+			.read-link:hover {
+				color: var(--color-accent-dark);
+			}
+			.featured-image :global(img) {
+				width: 100%;
+				height: auto;
+				border-radius: 4px;
+			}
+			.category-section {
+				margin-bottom: 0;
+			}
+			.category-section h2 {
+				font-family: var(--font-display);
+				font-size: 1.3rem;
+				font-weight: 400;
+				margin-bottom: 0.2rem;
+			}
+			.category-section .subtitle {
+				font-family: var(--font-serif);
+				font-style: italic;
+				font-size: 0.88rem;
+				color: var(--color-text-light);
+				margin-bottom: 1rem;
+			}
+			.essay-list {
+				list-style: none;
+				padding: 0;
+				margin: 0;
+			}
+			.essay-list li {
+				padding: 0.5rem 0;
+			}
+			.essay-list li::before {
+				content: '·';
+				margin-right: 0.6rem;
+				color: var(--color-text-light);
+			}
+			.essay-list a {
+				font-family: var(--font-serif);
+				font-size: 0.95rem;
+				text-decoration: none;
+				color: var(--color-text);
+				transition: color 0.2s;
+			}
+			.essay-list a:hover {
+				color: var(--color-accent-dark);
+			}
+			.pagination {
+				display: flex;
+				justify-content: space-between;
+				align-items: center;
+				margin-top: 0.8rem;
+				font-family: var(--font-serif);
+				font-size: 0.88rem;
+			}
+			.pagination a {
+				color: var(--color-text);
+				text-decoration: none;
+				cursor: pointer;
+				transition: color 0.2s;
+			}
+			.pagination a:hover {
+				color: var(--color-accent-dark);
+			}
+			.pagination a.disabled {
+				visibility: hidden;
+			}
+			.thumbnails {
+				display: flex;
+				gap: 1rem;
+				justify-content: center;
+				padding: 0.5rem 0 1rem;
+			}
+			.thumbnails {
+				flex-wrap: wrap;
+			}
+			.thumbnails :global(img) {
+				width: 120px;
+				height: 90px;
+				object-fit: cover;
+				border-radius: 4px;
+			}
+			.thumbnails-caption {
+				width: 100%;
+				text-align: center;
+				font-family: var(--font-serif);
+				font-style: italic;
+				font-size: 0.88rem;
+				color: var(--color-text-light);
+				margin-top: 0.5rem;
+				margin-bottom: 0;
+			}
+			.empty {
+				color: var(--color-text-light);
+				font-style: italic;
+				font-size: 0.9rem;
+				padding: 0.5rem 0;
+			}
+			@media (max-width: 600px) {
+				.hero h1 {
+					font-size: 2.4rem;
+				}
+				.featured-content {
+					grid-template-columns: 1fr;
+				}
+				.thumbnails :global(img) {
+					width: 90px;
+					height: 68px;
+				}
 			}
 		</style>
 	</head>
 	<body>
 		<Header />
 		<main>
-			<article>
-			<img src={heroImage.src} alt="Home" style="width:100%;border-radius:8px;margin-bottom:1.5em;" />
-				
-			</article>
+			<div class="hero">
+				<h1>{SITE_TITLE}</h1>
+				<p class="tagline">{SITE_DESCRIPTION}</p>
+			</div>
+			<div class="section-line"></div>
+
+			{featured && (
+				<section>
+					<h2 class="featured-title">{featured.data.title}</h2>
+					<div class="featured-content">
+						<div class="featured-text">
+							<p class="excerpt">{featured.data.description}</p>
+							<a class="read-link" href={`/blog/${featured.id}/`}>Read →</a>
+						</div>
+						{featured.data.heroImage ? (
+							<div class="featured-image">
+								<img src={typeof featured.data.heroImage === 'string' ? featured.data.heroImage : featured.data.heroImage.src} alt={featured.data.title} />
+							</div>
+						) : (
+							<div class="featured-image"></div>
+						)}
+					</div>
+					<div class="section-line"></div>
+				</section>
+			)}
+
+			{orderedCategories.map(cat => (
+				<section class="category-section" data-category={cat.slug}>
+					<h2>{cat.label}</h2>
+					{cat.subtitle && <p class="subtitle">{cat.subtitle}</p>}
+					{(postsByCategory[cat.slug] || []).length > 0 ? (
+						<>
+							<ul class="essay-list" data-page-size="4">
+								{(postsByCategory[cat.slug] || []).map(post => (
+									<li>
+										<a href={`/blog/${post.id}/`}>{post.data.title}</a>
+									</li>
+								))}
+							</ul>
+							{(postsByCategory[cat.slug] || []).length > 4 && (
+								<div class="pagination">
+									<a class="page-prev disabled">← Previous</a>
+									<a class="page-next">Next →</a>
+								</div>
+							)}
+						</>
+					) : (
+						<p class="empty">Essays coming soon.</p>
+					)}
+					<div class="section-line"></div>
+				</section>
+			))}
+
+			{THUMBNAIL_IMAGES.length > 0 && (
+				<div class="thumbnails">
+					{THUMBNAIL_IMAGES.map((filename, i) => (
+						<img src={`/images/thumbnails/${filename}`} alt={`Drawing ${i + 1}`} />
+					))}
+					<p class="thumbnails-caption">Drawings by Vicky and Sydney</p>
+				</div>
+			)}
 		</main>
 		<Footer />
+
+		<script>
+			document.querySelectorAll('.essay-list[data-page-size]').forEach(list => {
+				const pageSize = parseInt(list.getAttribute('data-page-size') || '4');
+				const items = Array.from(list.children);
+				if (items.length <= pageSize) return;
+
+				let page = 0;
+				const totalPages = Math.ceil(items.length / pageSize);
+				const section = list.closest('section');
+				const prevBtn = section?.querySelector('.page-prev');
+				const nextBtn = section?.querySelector('.page-next');
+
+				function render() {
+					const start = page * pageSize;
+					const end = start + pageSize;
+					items.forEach((item, i) => {
+						(item as HTMLElement).style.display = (i >= start && i < end) ? '' : 'none';
+					});
+					if (prevBtn) {
+						prevBtn.classList.toggle('disabled', page === 0);
+					}
+					if (nextBtn) {
+						nextBtn.classList.toggle('disabled', page >= totalPages - 1);
+					}
+				}
+
+				prevBtn?.addEventListener('click', (e) => {
+					e.preventDefault();
+					if (page > 0) { page--; render(); }
+				});
+				nextBtn?.addEventListener('click', (e) => {
+					e.preventDefault();
+					if (page < totalPages - 1) { page++; render(); }
+				});
+
+				render();
+			});
+		</script>
 	</body>
 </html>
