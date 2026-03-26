@@ -158,8 +158,9 @@ const featured = FEATURED_POST_SLUG
 				flex-wrap: wrap;
 			}
 			.thumbnails :global(img) {
-				width: 180px;
-				height: 135px;
+				flex: 1;
+				min-width: 0;
+				aspect-ratio: 4 / 3;
 				object-fit: cover;
 				border-radius: 4px;
 			}
@@ -187,8 +188,7 @@ const featured = FEATURED_POST_SLUG
 					grid-template-columns: 1fr;
 				}
 				.thumbnails :global(img) {
-					width: 135px;
-					height: 101px;
+					aspect-ratio: 4 / 3;
 				}
 			}
 		</style>
