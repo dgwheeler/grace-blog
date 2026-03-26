@@ -3,7 +3,7 @@ import { getCollection } from 'astro:content';
 import BaseHead from '../components/BaseHead.astro';
 import Footer from '../components/Footer.astro';
 import Header from '../components/Header.astro';
-import { SITE_DESCRIPTION, SITE_TITLE } from '../consts';
+import { SITE_DESCRIPTION, SITE_TITLE, FEATURED_POST_SLUG } from '../consts';
 import { CATEGORIES } from '../categories';
 
 const allPosts = (await getCollection('blog')).sort(
@@ -22,7 +22,9 @@ const postsByCategory = Object.fromEntries(
 	orderedCategories.map(c => [c.slug, allPosts.filter(p => norm(p.data.category) === norm(c.slug))])
 );
 
-const featured = allPosts[0];
+const featured = FEATURED_POST_SLUG
+	? allPosts.find(p => p.id === FEATURED_POST_SLUG) || allPosts[0]
+	: allPosts[0];
 const thumbnailPosts = allPosts.filter(p => p.data.heroImage).slice(0, 3);
 ---
 

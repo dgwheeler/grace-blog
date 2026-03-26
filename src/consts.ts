@@ -3,3 +3,4 @@
 
 export const SITE_TITLE = 'After Two Thirty';
 export const SITE_DESCRIPTION = 'small moments of motherhood';
+export const FEATURED_POST_SLUG = 'who-did-you-play-with';
