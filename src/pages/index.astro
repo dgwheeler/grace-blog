@@ -3,7 +3,7 @@ import { getCollection } from 'astro:content';
 import BaseHead from '../components/BaseHead.astro';
 import Footer from '../components/Footer.astro';
 import Header from '../components/Header.astro';
-import { SITE_DESCRIPTION, SITE_TITLE, FEATURED_POST_SLUG, THUMBNAIL_IMAGES } from '../consts';
+import { SITE_DESCRIPTION, SITE_TITLE, FEATURED_POST_SLUG, THUMBNAIL_IMAGES, HOME_INTRO } from '../consts';
 import { CATEGORIES } from '../categories';
 
 const allPosts = (await getCollection('blog')).sort(
@@ -49,6 +49,19 @@ const featured = FEATURED_POST_SLUG
 				color: var(--color-text-light);
 				font-size: 1.15rem;
 				margin-top: 0.3rem;
+			}
+			.hero .intro {
+				font-family: var(--font-serif);
+				max-width: 34rem;
+				margin: 1.4rem 0 0;
+				line-height: 1.8;
+				color: var(--color-text);
+			}
+			.hero .intro :global(p) {
+				margin-bottom: 0.9rem;
+			}
+			.hero .intro :global(p:last-child) {
+				margin-bottom: 0;
 			}
 			.section-line {
 				width: 100%;
@@ -199,6 +212,7 @@ const featured = FEATURED_POST_SLUG
 			<div class="hero">
 				<h1>{SITE_TITLE}</h1>
 				<p class="tagline">{SITE_DESCRIPTION}</p>
+				{HOME_INTRO && <div class="intro" set:html={HOME_INTRO} />}
 			</div>
 			<div class="section-line"></div>
 

@@ -4,6 +4,8 @@ import BaseHead from '../components/BaseHead.astro';
 import Footer from '../components/Footer.astro';
 import Header from '../components/Header.astro';
 import { getCategoryLabel } from '../categories';
+import Comments from '../components/Comments.astro';
+import { COMMENTS_ENABLED } from '../consts';
 
 interface Props {
 	title: string;
@@ -12,11 +14,12 @@ interface Props {
 	updatedDate?: Date;
 	heroImage?: any;
 	category?: string;
+	slug: string;
 	prevPost?: { title: string; slug: string };
 	nextPost?: { title: string; slug: string };
 }
 
-const { title, description, pubDate, updatedDate, heroImage, category, prevPost, nextPost } = Astro.props;
+const { title, description, pubDate, updatedDate, heroImage, category, slug, prevPost, nextPost } = Astro.props;
 
 const categoryLabel = category ? getCategoryLabel(category) : '';
 ---
@@ -110,6 +113,7 @@ const categoryLabel = category ? getCategoryLabel(category) : '';
 							) : <span />}
 						</nav>
 					)}
+					{COMMENTS_ENABLED && <Comments slug={slug} />}
 				</div>
 			</article>
 		</main>
